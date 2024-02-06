@@ -1,0 +1,11 @@
+.bg-banner{
+    background-image: url('../images/banner1.jpg');
+}
+
+.input_border {
+    border: solid #f0ebeb;
+}
+
+.admin-menu{
+    padding: 7px;
+}
