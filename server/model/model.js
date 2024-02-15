@@ -9,10 +9,10 @@ const common_services = `CREATE TABLE IF NOT EXISTS common_services (
 const company_roles = `CREATE TABLE IF NOT EXISTS company_roles (
   company_role_id int(11) NOT NULL AUTO_INCREMENT,
   company_role_name varchar(255) NOT NULL,
-  PRIMARY KEY (company_role_id)
+  PRIMARY KEY (company_role_id),
+  UNIQUE(company_role_name)
 )`;
 
-  // UNIQUE(company_role_name);
 
 // cutomer table
 

@@ -19,7 +19,7 @@ const createEmployee = async (data) => {
           salt
         );
 
-
+console.log(data.employee_password_hashed);
         const query = `INSERT INTO employee (employee_email, active_employee)  VALUES (?, ?)`;
         const rows = await pool.query(query, [data.employee_email,  data.active_employee])
         
@@ -40,13 +40,16 @@ const createEmployee = async (data) => {
         const query3 = `INSERT INTO employee_pass (employee_id, employee_password_hashed) VALUES (?, ?)`;
         const rows3 = await pool.query(query3, [employee_id, hashPassword]);
 
-        const query4 = `INSERT INTO company_roles (company_role_name) VALUES (?)`;
-        const rows4 = await pool.query(query4, [data.company_role_name]);
+        // const query5 = `INSERT INTO company_roles (company_role_name) VALUES (?)`;
+        // const rows5 = await pool.query(query5, [data.company_role_name]);
 
-        const company_role_id = rows4[0].insertId
+        // const company_role_id = rows5[0].insertId
 
-        const query5 = `INSERT INTO employee_role (employee_id, company_role_id) VALUES (?, ?)`;
-        const rows5 = await pool.query(query5, [employee_id, company_role_id]);
+        const query4 = `INSERT INTO employee_role (employee_id, company_role_id) VALUES (?, ?)`;
+        const rows4 = await pool.query(query4, [
+          employee_id,
+          data.company_role_id,
+        ]);
 
         createdEmployee = {
             employee_id,

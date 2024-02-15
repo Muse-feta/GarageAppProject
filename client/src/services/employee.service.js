@@ -1,0 +1,16 @@
+const api_url = import.meta.env.VITE_API_URL;
+import axios from 'axios'
+
+const createEmployee = async (formData) => {
+    console.log(formData)
+    const res = await axios.post(`${api_url}/employee`, formData);
+    return res
+}
+
+// export default createEmployee
+const employeeService = {createEmployee}
+export default employeeService;
+
+
+
+

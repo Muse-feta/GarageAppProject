@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 const pool = require('./config/db.config');
+// import cors
+const cors = require('cors')
 const { employee, employee_info, employee_pass, customerIdentifier, customer_info, customer_vehicle_info, company_roles, common_services, employee_role, orders, order_info, order_services, order_status } = require('./model/model');
 const router = require('./routes');
 require("dotenv").config();
@@ -8,6 +10,11 @@ const PORT = process.env.PORT
 
 
 // parse incoming requests data
+app.use(
+  cors({
+    origin: true,
+  })
+);
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 

@@ -10,6 +10,7 @@ const Header = () => {
   const handleOpen = () => {
     setIsOpen(!isOpen)
   }
+
   return (
     <div className=" sticky top-0 bg-white z-10 shadow-lg">
       <header className="main-header header-style-one">
