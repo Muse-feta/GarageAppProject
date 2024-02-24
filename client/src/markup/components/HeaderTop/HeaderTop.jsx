@@ -1,6 +1,9 @@
-import React from 'react'
+import React from "react";
+import { useAuth } from "../../../context/AuthContext";
 
 const HeaderTop = () => {
+  const { isLogged, setIsLogged, employee } = useAuth();
+  console.log(employee);
   return (
     <div>
       <div className="header-top">
@@ -13,15 +16,20 @@ const HeaderTop = () => {
               </div>
             </div>
             <div className="right-column">
-              <div className="phone-number">
-                Schedule Your Appontment Today : <strong>1800 456 7890</strong>
-              </div>
+              {employee ? (
+                <div className="text">Welcome {employee?.first_name}</div>
+              ) : (
+                <div className="phone-number">
+                  Schedule Your Appontment Today :{" "}
+                  <strong>1800 456 7890</strong>
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
-export default HeaderTop
+export default HeaderTop;

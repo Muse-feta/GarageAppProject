@@ -8,14 +8,16 @@ const login = async (req, res, next) => {
     try {
         const employeeData = req.body
         const employee = await loginServices.login(employeeData)
+        console.log("this is employee :)",employee)
         if(employee.success === false){
             return res.status(403).json({error: employee.message})
         }
         const payload = {
-            email: employee.employee_email,
-            first_name: employee.employee_first_name,
-            employee_role: employee.employee_role
+            email: employee.data.employee_email,
+            first_name: employee.data.employee_first_name,
+            employee_role: employee.data.company_role_id
         }
+        console.log(payload)
         const token = jwt.sign(payload, JWT_SECRET, {expiresIn: '1d'})
         const sendBack = {
             employee_token: token

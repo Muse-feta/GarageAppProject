@@ -48,7 +48,7 @@ console.log(data.employee_password_hashed);
         const query4 = `INSERT INTO employee_role (employee_id, company_role_id) VALUES (?, ?)`;
         const rows4 = await pool.query(query4, [
           employee_id,
-          data.company_role_id,
+          data.company_role_id
         ]);
 
         createdEmployee = {
@@ -57,7 +57,8 @@ console.log(data.employee_password_hashed);
             active_employee: data.active_employee,
             employee_first_name: data.employee_first_name,
             employee_last_name: data.employee_last_name,
-            employee_phone: data.employee_phone
+            employee_phone: data.employee_phone,
+            company_role_id: data.company_role_id
         }
         return createdEmployee
 

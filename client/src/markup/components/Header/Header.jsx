@@ -1,14 +1,22 @@
-import React, { useState } from 'react'
-import logo  from '../../../assets/images/logo.png'
+import React, { useState } from "react";
+import logo from "../../../assets/images/logo.png";
 import { FaWindowClose } from "react-icons/fa";
 import { TiThMenu } from "react-icons/ti";
+import { useAuth } from "../../../context/AuthContext";
+import { logOut } from "../../../../util/auth";
 
 const Header = () => {
-
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+  console.log(useAuth())
+  const { employee, isLoged, setIsLoged } = useAuth();
 
   const handleOpen = () => {
-    setIsOpen(!isOpen)
+    setIsOpen(!isOpen);
+  };
+
+  const handleLogOut = () => {
+    logOut();
+    setIsLoged(false);
   }
 
   return (
@@ -55,15 +63,23 @@ const Header = () => {
                         <li>
                           <a href="/contact">Contact Us</a>
                         </li>
-                       
                       </ul>
                     </div>
                   </nav>
 
                   <div class="link-btn ml-3">
-                    <a href="/login" class="theme-btn btn-style-one">
-                      Login
-                    </a>
+                    {isLoged ? (
+                      <a
+                        className="theme-btn btn-style-one text-white"
+                        handleClick={handleLogOut}
+                      >
+                        LogOut
+                      </a>
+                    ) : (
+                      <a href="/login" className="theme-btn btn-style-one">
+                        Login
+                      </a>
+                    )}
                   </div>
 
                   <button className=" text-4xl lg:hidden" onClick={handleOpen}>
@@ -104,14 +120,23 @@ const Header = () => {
             CONTACT US
           </h1>
           <div className="link-btn mt-3 flex justify-center items-center">
-            <a href="/login" className="theme-btn btn-style-one">
-              Login
-            </a>
+            {isLoged ? (
+              <h1
+                className="theme-btn btn-style-one text-white"
+                onClick={handleLogOut}
+              >
+                LogOut
+              </h1>
+            ) : (
+              <a href="/login" className="theme-btn btn-style-one">
+                Login
+              </a>
+            )}
           </div>
         </div>
       )}
     </div>
   );
-}
+};
 
-export default Header
+export default Header;
