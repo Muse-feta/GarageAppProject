@@ -3,9 +3,14 @@ const express = require('express');
 // import router from express
 const router = express.Router();
 //import employee cotroller from controller folder
-const employeeController = require('../controller/employee.controller')
+const employeeController = require('../controller/employee.controller');
+const { verifyToken, isAdmin } = require('../middlewares/auth.middleware');
 
-router.post("/api/employee", employeeController.createEmployee);
+router.post(
+  "/api/employee",
+  [verifyToken, isAdmin],
+  employeeController.createEmployee
+);
 
 
 // export the router

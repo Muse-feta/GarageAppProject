@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
-import { json, useNavigate } from 'react-router-dom';
-import loginService from '../../../services/login.service';
+import React, { useState } from "react";
+import { json, useNavigate } from "react-router-dom";
+import loginService from "../../../services/login.service";
 import { toast, Bounce } from "react-toastify";
-
 
 const LoginForm = () => {
   const [loginForm, setLoginForm] = useState({
@@ -10,75 +9,64 @@ const LoginForm = () => {
     employee_password: "",
   });
 
+  
+
+  
+
   const [email_required, set_email_required] = useState("");
   const [password_required, set_password_required] = useState("");
   const [server_error, setServerError] = useState("");
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
-  let valid = true
+  let valid = true;
+  // const employeeToken = getAuth();
+  // console.log(employeeToken.token.employee_token);
 
   const handleChange = (e) => {
     setLoginForm({
       ...loginForm, //spread operator
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    valid = true
-    if(!loginForm.employee_email){
-      set_email_required("please enter email to continue")
-      valid = false
-    }else if(!loginForm.employee_email.includes("@")){
-      set_email_required("please enter valid email to continue")
-      valid = false
-    }else{
+    valid = true;
+    if (!loginForm.employee_email) {
+      set_email_required("please enter email to continue");
+      valid = false;
+    } else if (!loginForm.employee_email.includes("@")) {
+      set_email_required("please enter valid email to continue");
+      valid = false;
+    } else {
       const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if(!regex.test(loginForm.employee_email)){
-        set_email_required("please enter valid email to continue")
-        valid = false
-      }else{
-        set_email_required("")
+      if (!regex.test(loginForm.employee_email)) {
+        set_email_required("please enter valid email to continue");
+        valid = false;
+      } else {
+        set_email_required("");
       }
     }
     // password validation
-    if(!loginForm.employee_password){
-      set_password_required("please enter password to continue")
-      valid = false
-    }else{
-      set_password_required("")
+    if (!loginForm.employee_password) {
+      set_password_required("please enter password to continue");
+      valid = false;
+    } else {
+      set_password_required("");
     }
 
-    if(!valid){
-      return
+    if (!valid) {
+      return;
     }
 
     try {
-      const response = await loginService.login(loginForm)
-      console.log(response)
-      if(response.status === 200){
-        if(response.data.token){
-          localStorage.setItem("token", JSON.stringify(response.data.token))
+      const response = await loginService.login(loginForm);
+      console.log(response);
+      if (response.status === 200) {
+        if (response.data.token) {
+          localStorage.setItem("token", JSON.stringify(response.data.token));
         }
-          toast.success("Login Succesfully", {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-          });
-          navigate("/");
-      }
-          
-    } catch (error) {
-      console.log(error)
-      console.log(error.response.data.error)
-        toast.error(error.response.data.error, {
+        toast.success("Login Succesfully", {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -89,9 +77,24 @@ const LoginForm = () => {
           theme: "light",
           transition: Bounce,
         });
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+      console.log(error.response.data.error);
+      toast.error(error.response.data.error, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
-  }
-
+  };
 
   return (
     <div className=" ml-[20%] m-11">
@@ -122,7 +125,9 @@ const LoginForm = () => {
                 : "md:w-[480px] py-3 px-5 mb-3 mt-3 input_border"
             }
             type="password"
-            placeholder={password_required ? password_required : "Employee email"}
+            placeholder={
+              password_required ? password_required : "Employee email"
+            }
             name="employee_password"
             value={loginForm.employee_password}
             onChange={handleChange}
@@ -135,6 +140,6 @@ const LoginForm = () => {
       </div>
     </div>
   );
-}
+};
 
-export default LoginForm
+export default LoginForm;

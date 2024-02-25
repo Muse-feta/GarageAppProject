@@ -28,13 +28,32 @@ function App() {
         <Route path="/" element={<Shared_layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/admin/add-employee" element={<Add_Employee />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
-          <Route path="/admin/customers" element={<PrivateAuthRoute role={[2, 3]}><Customers /></PrivateAuthRoute>} />
-          {/* <Route path="/admin/orders" element={<Orders />} /> */}
-          <Route path="/admin/orders" element={<PrivateAuthRoute role={[1, 2, 3]}>
-            <Orders />
-          </PrivateAuthRoute>} />
+          <Route
+            path="/admin/add-employee"
+            element={
+              <PrivateAuthRoute role={[3]}>
+                <Add_Employee />
+              </PrivateAuthRoute>
+            }
+          />
+          {/* <Route path="/admin/add-employee" element={<Add_Employee />} /> */}
+          <Route
+            path="/admin/customers"
+            element={
+              <PrivateAuthRoute role={[2, 3]}>
+                <Customers />
+              </PrivateAuthRoute>
+            }
+          />
+          <Route
+            path="/admin/orders"
+            element={
+              <PrivateAuthRoute role={[1, 2, 3]}>
+                <Orders />
+              </PrivateAuthRoute>
+            }
+          />
           <Route path="/admin/employees" element={<Employees />} />
         </Route>
       </Routes>

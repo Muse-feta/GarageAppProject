@@ -3,7 +3,7 @@ const getAuth = async () => {
   const token =  localStorage.getItem("token")
   if (token) {
     const decodedToken =   jwtDecode(token);
-    return decodedToken;
+    return {decodedToken, token};
   } else {
     return null;
   }

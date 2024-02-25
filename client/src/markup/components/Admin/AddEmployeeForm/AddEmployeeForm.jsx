@@ -2,8 +2,14 @@ import { useState } from "react";
 import { toast, Bounce } from "react-toastify";
 import employeeService from "../../../../services/employee.service";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../../context/AuthContext";
 
 const AddEmployeeForm = () => {
+  var employeeToken = ""
+  const {employee} = useAuth();
+  if(employee && employee.token){
+    employeeToken = employee.token
+  }
   const [employeeData, setEmployeeData] = useState({
     employee_email: "",
     employee_first_name: "",
@@ -97,7 +103,10 @@ const AddEmployeeForm = () => {
     }
 
     try {
-      const resData = await employeeService.createEmployee(employeeData);
+      const resData = await employeeService.createEmployee(
+        employeeData,
+        employeeToken
+      );
        setServerSuccess(resData.data.message)
       setSuccess(resData);
       toast.success(resData.data.message, {

@@ -10,18 +10,21 @@ const PrivateAuthRoute = ({ role, children }) => {
     const [isChecked, setIsChecked] = useState(false);
     const [isLoged, setIsLoged] = useState(false);
     const [isAuthorized, setIsAuthorized] = useState(false);
+    console.log("from privet route",isLoged)
     useEffect(()=>{
         const loggedInEmployee = getAuth();
         loggedInEmployee.then((res) => {
-            if(res.iat){
-                setIsLoged(true);
-                if(role && role.length > 0 && role.includes(res.employee_role)){
+            if(res.decodedToken.token){
+                setIsLoged(true)
+                if(role && role.length > 0 && role.includes(res.decodedToken.employee_role)){
                     setIsAuthorized(true);
                 }
             }
-            setIsChecked(true);
+            
         })
+        setIsChecked(true);
     },[role])
+    
 
     const navigate = useNavigate();
     if(isChecked){

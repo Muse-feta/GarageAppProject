@@ -27,11 +27,11 @@ export const AuthProvider = ({ children }) => {
         const loggedInEmployee = getAuth();
         loggedInEmployee.then((res) => {
             console.log(res)
-            if(res.iat){
+            if(res.decodedToken.iat){
                 setIsLoged(true)
             }
-            if(res.employee_role === 3){
-                setIsAdmin(true)
+            if (res.decodedToken.employee_role === 3) {
+              setIsAdmin(true);
             }
             setEmployee(res)
         })

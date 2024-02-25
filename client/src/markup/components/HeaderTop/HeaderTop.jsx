@@ -17,7 +17,7 @@ const HeaderTop = () => {
             </div>
             <div className="right-column">
               {employee ? (
-                <div className="text">Welcome {employee?.first_name}</div>
+                <div className="text">Welcome {employee?.decodedToken.first_name}</div>
               ) : (
                 <div className="phone-number">
                   Schedule Your Appontment Today :{" "}
