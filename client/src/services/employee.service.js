@@ -7,15 +7,26 @@ const createEmployee = async (formData, employeeToken) => {
     formData,   
      {
       headers: {
-        "x-access-token": employeeToken,
+        "x-access-token": await employeeToken,
       },
     });
     console.log(employeeToken)
     return res
 }
 
+const getAllEmployees = async (employeeToken) => {
+  const res = await axios.get(`${api_url}/employees`,
+   {
+     headers: {
+      "x-access-token": employeeToken,
+    },
+   }
+  );
+  return res
+}
+
 // export default createEmployee
-const employeeService = {createEmployee}
+const employeeService = {createEmployee, getAllEmployees}
 export default employeeService;
 
 
