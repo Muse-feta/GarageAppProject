@@ -12,6 +12,11 @@ router.post(
   employeeController.createEmployee
 );
 
+router.get(
+  "/api/employees",[verifyToken, isAdmin],
+  employeeController.getAllEmployees
+)
+
 
 // export the router
 module.exports=router;

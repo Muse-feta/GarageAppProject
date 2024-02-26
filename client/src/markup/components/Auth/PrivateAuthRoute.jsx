@@ -14,10 +14,14 @@ const PrivateAuthRoute = ({ role, children }) => {
     useEffect(()=>{
         const loggedInEmployee = getAuth();
         loggedInEmployee.then((res) => {
-            if(res.decodedToken.token){
+            if(res.token){
                 setIsLoged(true)
-                if(role && role.length > 0 && role.includes(res.decodedToken.employee_role)){
-                    setIsAuthorized(true);
+                if (
+                  role &&
+                  role.length > 0 &&
+                  role.includes(res.decodedToken.employee_role)
+                ) {
+                  setIsAuthorized(true);
                 }
             }
             

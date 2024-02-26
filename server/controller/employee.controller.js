@@ -24,4 +24,13 @@ const createEmployee = async (req, res, next) => {
 
 }
 
-module.exports = {createEmployee}
+const getAllEmployees = async (req, res, next) => {
+    const employee = await employeeService.getAllEmployees();
+    if(!employee){
+        return res.status(500).send('failed to get all employees')
+    }else{
+        return res.status(200).json({success: true, data: employee})
+    }
+}
+
+module.exports = {createEmployee, getAllEmployees}
