@@ -31,12 +31,7 @@ const AddEmployeeForm = () => {
 
   const [success, setSuccess] = useState("");
 
-  const handleChange = (e) => {
-    setEmployeeData({
-      ...employeeData,
-      [e.target.name]: e.target.value,
-    });
-  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -137,6 +132,13 @@ const AddEmployeeForm = () => {
        });
     }
   };
+
+    const handleChange = (e) => {
+      setEmployeeData({
+        ...employeeData,
+        [e.target.name]: e.target.value,
+      });
+    };
 
   return (
     <div className=" my-11 ml-[100px]">

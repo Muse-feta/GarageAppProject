@@ -19,6 +19,7 @@ import "./assets/styles/custom.css"
 import Shared_layout from './markup/pages/Shared_layout'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Add_Customer from './markup/pages/admin/Add_Customer'
 
 function App() {
 
@@ -35,6 +36,14 @@ function App() {
               <PrivateAuthRoute role={[3]}>
                 <Add_Employee />
               </PrivateAuthRoute>
+            }
+          />
+          <Route
+            path="/admin/add-customer"
+            element={
+              
+                <Add_Customer />
+              
             }
           />
           {/* <Route path="/admin/add-employee" element={<Add_Employee />} /> */}
