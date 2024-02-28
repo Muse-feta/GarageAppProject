@@ -1,14 +1,14 @@
 import React from 'react'
 import AdminMenu from '../../components/Admin/AdminMenu/AdminMenu';
-import CustomerList from '../../components/Admin/CustomerList/CustomerList';
+import EditCustomerForm from '../../components/Admin/Edit_Customer/EditCustomerForm';
 
-const Customers = () => {
+const Customer_Edit = () => {
   return (
     <div className=" flex">
       <AdminMenu/>
-      <CustomerList/>
+      <EditCustomerForm/>
     </div>
   );
 }
 
-export default Customers
+export default Customer_Edit

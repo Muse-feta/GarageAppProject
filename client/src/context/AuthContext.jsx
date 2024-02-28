@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
             setEmployee(res)
         })
         
-    },[ isAdmin, isLoged ])
+    },[ isAdmin, isLoged])
 
     return (
         <AuthContext.Provider value={value}>

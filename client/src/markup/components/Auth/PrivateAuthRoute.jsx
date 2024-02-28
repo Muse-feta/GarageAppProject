@@ -27,7 +27,7 @@ const PrivateAuthRoute = ({ role, children }) => {
             
         })
         setIsChecked(true);
-    },[role])
+    },[])
     
 
     const navigate = useNavigate();

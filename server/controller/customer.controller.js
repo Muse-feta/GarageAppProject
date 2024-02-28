@@ -1,7 +1,8 @@
 const customerService = require("../services/customer.service")
+const randomstring = require("randomstring");
 
 const createCustomer = async (req, res) => {
-
+    const customer_hash = randomstring.generate(10);
     const customerExist = await customerService.isCustomerExist(req.body.customer_email);
 
     if(customerExist.length > 0) {
@@ -9,7 +10,7 @@ const createCustomer = async (req, res) => {
     }
     
     try {
-        const customer = await customerService.createCustomer(req.body);
+        const customer = await customerService.createCustomer(req.body, customer_hash);
         if (!customer) {
           return res
             .status(500)
@@ -28,7 +29,56 @@ const createCustomer = async (req, res) => {
     }
 }
 
-const customerController = { 
-    createCustomer
+// update customer controller
+const updateCustomer = async (req, res) => {
+    const customer = await customerService.updateCustomer(
+      req.params.customer_id,
+      req.body
+    );
+    if (!customer) {
+      return res
+        .status(500)
+        .json({ success: false, message: "failed to update customer" });
+    } else {
+      return res
+        .status(200)
+        .json({ success: true, message: "Customer has been updated successfully" });
+    }
+  };
+
+const getCustomerById = async (req, res) => {
+  const customer = await customerService.getCustomerById(
+    req.params.customer_id 
+  )
+  if (!customer) {
+    return res. status(500).json({
+      success: false,
+    })
+  }else {
+    return res.status(200).json({
+      success: true,
+      data: customer
+    })
+  }
+
 }
+
+const getAllCustomers = async (req, res) => {
+  const customers = await customerService.getAllCustomers();
+  if (!customers) {
+    return res. status(500).json({
+      success: false, message: "failed to get all customers"
+    })
+  }else{
+    return res.status(200).json({
+      success: true, data: customers
+    })
+  }
+}
+const customerController = {
+  createCustomer,
+  updateCustomer,
+  getCustomerById,
+  getAllCustomers
+};
 module.exports = customerController
