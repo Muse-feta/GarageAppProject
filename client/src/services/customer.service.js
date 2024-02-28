@@ -43,11 +43,24 @@ const updateCustomer = async (customer_id, formData, customerToken) => {
   return res
 }
 
+const deleteCustomer = async (customer_id, customerToken) => {
+  const res = await axios.delete(
+    `${api_url}/customer/${customer_id}`,
+    {
+      headers: {
+        "x-access-token": customerToken,
+      }
+    }
+  )
+  return res
+}
+
 const customerService = {
     createCustomer,
     getCustomerById,
     getAllCustomers,
-    updateCustomer
+    updateCustomer,
+    deleteCustomer
 }
 
 export default customerService

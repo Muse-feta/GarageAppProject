@@ -75,10 +75,26 @@ const getAllCustomers = async (req, res) => {
     })
   }
 }
+
+const deleteCustomer = async (req, res) => {
+  const customer = await customerService.deleteCustomer(
+    req.params.customer_id
+  )
+  if (!customer) {
+    return res. status(500).json({
+      success: false, message: "failed to delete customer"
+    })
+  }else{
+    return res.status(200).json({
+      success: true, message: "Customer has been deleted successfully"
+    })
+  }
+}
 const customerController = {
   createCustomer,
   updateCustomer,
   getCustomerById,
-  getAllCustomers
+  getAllCustomers,
+  deleteCustomer
 };
 module.exports = customerController

@@ -63,7 +63,18 @@ const getAllCustomers = async () => {
     return rows[0];
 }
 
+const deleteCustomer = async (customer_id) => {
+    const query = `DELETE FROM customer_info WHERE customer_id = ?`;
+    const rows = await pool.query(query, [customer_id]);
+    const query2 = `DELETE FROM customer_identifier WHERE customer_id = ?`;
+    const rows2 = await pool.query(query2, [customer_id]);
+    const query3 = `DELETE FROM customer_vehicle_info WHERE customer_id = ?`;
+    const rows3 = await pool.query(query3, [customer_id]);
+    // return 2 rows
+    return rows3;
+}
+
 const customerService = {
-    createCustomer, isCustomerExist, updateCustomer, getCustomerById, getAllCustomers
+    createCustomer, isCustomerExist, updateCustomer, getCustomerById, getAllCustomers, deleteCustomer
 }
 module.exports = customerService

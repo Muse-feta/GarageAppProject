@@ -7,5 +7,7 @@ router.post("/api/customer",[verifyToken, isAdmin], customerController.createCus
 router.get('/api/customers', customerController.getAllCustomers);
 router.put("/api/customer/:customer_id", customerController.updateCustomer);
 router.get("/api/customer/:customer_id", customerController.getCustomerById);
+// delete a customer
+router.delete("/api/customer/:customer_id", customerController.deleteCustomer);
 
 module.exports = router

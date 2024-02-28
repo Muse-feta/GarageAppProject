@@ -5,6 +5,8 @@ import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import customerService from "../../../../services/customer.service";
 import { Link } from "react-router-dom";
+import { toast, Bounce } from "react-toastify";
+
 
 const CustomerList = () => {
   const [customers, setCustomers] = useState([]);
@@ -22,6 +24,50 @@ const CustomerList = () => {
       console.log(res.data.data);
     });
   }, [customerToken]);
+
+  const handleDelete = async (id) => {
+    try {
+      const res = await customerService.deleteCustomer(id, customerToken);
+      if (res.status === 200) {
+        toast.success(res.data.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      } else {
+        toast.error(res.data.message, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      })
+    }
+  }
   return (
     <div>
       <>
@@ -111,9 +157,7 @@ const CustomerList = () => {
                           )}
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          {customer.active_customer_status === 1
-                            ? "Yes"
-                            : "No"}
+                          {customer.active_customer_status === 1 ? "Yes" : "No"}
                         </td>
                         <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                           <div className="flex gap-2">
@@ -122,8 +166,10 @@ const CustomerList = () => {
                             >
                               <FaEdit />
                             </Link>
-                            <button>
-                              <MdDelete />
+                            <button
+                              onClick={() => handleDelete(customer.customer_id)}
+                            >
+                              <MdDelete/>
                             </button>
                           </div>
                         </td>
