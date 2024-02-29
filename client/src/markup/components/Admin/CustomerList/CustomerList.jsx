@@ -6,6 +6,7 @@ import { MdDelete } from "react-icons/md";
 import customerService from "../../../../services/customer.service";
 import { Link } from "react-router-dom";
 import { toast, Bounce } from "react-toastify";
+import { MdEditCalendar } from "react-icons/md";
 
 
 const CustomerList = () => {
@@ -169,8 +170,13 @@ const CustomerList = () => {
                             <button
                               onClick={() => handleDelete(customer.customer_id)}
                             >
-                              <MdDelete/>
+                              <MdDelete />
                             </button>
+                            <Link className=""
+                              to={`/admin/add-vehicle/${customer.customer_id}`}
+                            >
+                              <MdEditCalendar />
+                            </Link>
                           </div>
                         </td>
                       </tr>

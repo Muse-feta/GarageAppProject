@@ -20,6 +20,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Add_Customer from "./markup/pages/admin/Add_Customer";
 import EditCustomerForm from "./markup/components/Admin/Edit_Customer/EditCustomerForm";
+import Add_Vehicle from "./markup/pages/admin/Add_Vehicle";
 
 function App() {
   return (
@@ -75,7 +76,15 @@ function App() {
             path="/admin/customer-edit/:id"
             element={
               <PrivateAuthRoute role={[3]}>
-                <EditCustomerForm/>
+                <EditCustomerForm />
+              </PrivateAuthRoute>
+            }
+          />
+          <Route
+            path="/admin/add-vehicle/:id"
+            element={
+              <PrivateAuthRoute role={[3, 2, 1]}>
+                <Add_Vehicle />
               </PrivateAuthRoute>
             }
           />
