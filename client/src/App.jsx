@@ -21,6 +21,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Add_Customer from "./markup/pages/admin/Add_Customer";
 import EditCustomerForm from "./markup/components/Admin/Edit_Customer/EditCustomerForm";
 import Add_Vehicle from "./markup/pages/admin/Add_Vehicle";
+import Service from "./markup/pages/admin/Service";
+import Edit_Service from "./markup/pages/admin/Edit_Service";
 
 function App() {
   return (
@@ -85,6 +87,22 @@ function App() {
             element={
               <PrivateAuthRoute role={[3, 2, 1]}>
                 <Add_Vehicle />
+              </PrivateAuthRoute>
+            }
+          />
+          <Route
+            path="/admin/services"
+            element={
+              <PrivateAuthRoute role={[1, 2, 3]}>
+                <Service />
+              </PrivateAuthRoute>
+            }
+          />
+          <Route
+            path="/admin/edit-service/:service_id"
+            element={
+              <PrivateAuthRoute role={[1, 2, 3]}>
+                <Edit_Service/>
               </PrivateAuthRoute>
             }
           />
