@@ -10,4 +10,10 @@ router.post(
 
 router.get("/api/vehicles/:customer_id", vehicleController.getVehiclesByCustomerId);
 
+router.get(
+    "/api/vehicle/:vehicle_id",
+    // [verifyToken, isAdmin],
+    vehicleController.getVehicleById
+);
+
 module.exports = router;

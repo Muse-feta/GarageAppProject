@@ -43,9 +43,31 @@ const getVehiclesByCustomerId = async (req, res) => {
     
 }
 
+const getVehicleById = async (req, res) => {
+    try {
+        const vehicle = await vehicleService.getVehicleById(req.params.vehicle_id)
+        if (!vehicle) {
+            return res.status(500).json({
+                success: false,
+                message: "failed to get vehicle",
+            })
+        }
+        else{
+            return res.status(200).json({
+                success: true,
+                data: vehicle
+            })
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error)
+    }
+}
+
 const vehicleController = {
     createVehicle,
-    getVehiclesByCustomerId
+    getVehiclesByCustomerId,
+    getVehicleById
 }
 
 module.exports = vehicleController;

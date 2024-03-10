@@ -74,7 +74,23 @@ const deleteCustomer = async (customer_id) => {
     return rows3;
 }
 
+const searchCustomer = async (searchCustomer) => {
+  const query = `SELECT * FROM customer_identifier
+                 INNER JOIN customer_info ON customer_identifier.customer_id = customer_info.customer_id 
+                 WHERE customer_email LIKE ? OR customer_phone_number LIKE ? 
+                 OR customer_first_name LIKE ? OR customer_last_name LIKE ?`;
+  const rows = await pool.query(query, [
+    "%" + searchCustomer + "%",
+    "%" + searchCustomer + "%",
+    "%" + searchCustomer + "%",
+    "%" + searchCustomer + "%",
+  ]);
+  return rows[0];
+};
+
 const customerService = {
-    createCustomer, isCustomerExist, updateCustomer, getCustomerById, getAllCustomers, deleteCustomer
+    createCustomer, isCustomerExist, updateCustomer, getCustomerById, getAllCustomers, deleteCustomer, searchCustomer
 }
+
+
 module.exports = customerService

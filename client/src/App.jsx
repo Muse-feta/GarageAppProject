@@ -23,6 +23,9 @@ import EditCustomerForm from "./markup/components/Admin/Edit_Customer/EditCustom
 import Add_Vehicle from "./markup/pages/admin/Add_Vehicle";
 import Service from "./markup/pages/admin/Service";
 import Edit_Service from "./markup/pages/admin/Edit_Service";
+import AddOrder from "./markup/pages/admin/AddOrder";
+import NewOrderById from "./markup/pages/admin/NewOrderById";
+import CreateOrder from "./markup/pages/admin/CreateOrder";
 
 function App() {
   return (
@@ -102,8 +105,32 @@ function App() {
             path="/admin/edit-service/:service_id"
             element={
               <PrivateAuthRoute role={[1, 2, 3]}>
-                <Edit_Service/>
+                <Edit_Service />
               </PrivateAuthRoute>
+            }
+          />
+          <Route
+            path="admin/new-order"
+            element={
+              // <PrivateAuthRoute role={[1, 2, 3]}>
+              <AddOrder />
+              // </PrivateAuthRoute>
+            }
+          />
+          <Route
+            path="admin/new-order/:customer_id"
+            element={
+              // <PrivateAuthRoute role={[1, 2, 3]}>
+              <NewOrderById/>
+              // </PrivateAuthRoute>
+            }
+          />
+          <Route
+            path="admin/new-order/:customer_id/:vehicle_id"
+            element={
+              // <PrivateAuthRoute role={[1, 2, 3]}>
+              <CreateOrder/>
+              // </PrivateAuthRoute>
             }
           />
         </Route>

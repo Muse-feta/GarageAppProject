@@ -33,9 +33,16 @@ const getVehiclesByCustomerId = async (customer_id) => {
   return rows[0];
 }
 
+const getVehicleById = async (vehicle_id) => {
+  const query = `SELECT * FROM customer_vehicle_info WHERE vehicle_id = ?`;
+  const rows = await pool.query(query, [vehicle_id]);
+  return rows[0];
+}
+
 const vehicleService = {
   isVehicleExist,
   createVehicle,
-  getVehiclesByCustomerId
+  getVehiclesByCustomerId,
+  getVehicleById
 };
 module.exports = vehicleService;

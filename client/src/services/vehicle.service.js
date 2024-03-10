@@ -26,5 +26,12 @@ const addVehicle = async (vehicleData, employeeToken) => {
     return res
 }
 
-const vehicleService = { getVehiclesByCustomerId, addVehicle };
+const getVehiclesByVehicleId = async (vehicle_id, employeeToken) => {
+    const res = await axios.get(
+        `${api_url}/vehicle/${vehicle_id}`,
+    );
+    return res
+};
+
+const vehicleService = { getVehiclesByCustomerId, addVehicle, getVehiclesByVehicleId };
 export default vehicleService

@@ -55,12 +55,18 @@ const deleteCustomer = async (customer_id, customerToken) => {
   return res
 }
 
+const searchCustomer = async (query) => {
+  const res = await axios.get(`${api_url}/search/customer/${query}`); 
+  return res
+}
+
 const customerService = {
     createCustomer,
     getCustomerById,
     getAllCustomers,
     updateCustomer,
-    deleteCustomer
+    deleteCustomer,
+    searchCustomer
 }
 
 export default customerService
