@@ -10,6 +10,7 @@ const loginRoutes = require('./login.routes');
 const customerRoutes = require('./customer.routes');
 const vehicleRoutes = require('./vehicle.routes');
 const servicesRoutes = require('./services.routes');
+const orderRoutes = require('./order.routes');
 
 //  use the middleware function to handle requests for /employees route
 
@@ -18,6 +19,7 @@ router.use(loginRoutes);
 router.use(customerRoutes);
 router.use(vehicleRoutes);  
 router.use(servicesRoutes);
+router.use(orderRoutes);
 
 // export the router
 module.exports = router;

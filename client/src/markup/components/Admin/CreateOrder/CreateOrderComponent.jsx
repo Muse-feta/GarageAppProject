@@ -4,31 +4,75 @@ import { Link } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import vehicleService from "../../../../services/vehicle.service";
 import serviceService from "../../../../services/services.service";
+import { Bounce, toast } from "react-toastify";
+import { useAuth } from "../../../../context/AuthContext";
 
 const CreateOrderComponent = () => {
   const [customer, setCustomer] = useState([]);
   const [vehicle, setVehicle] = useState([]);
   const [Allservices, setAllServices] = useState([]);
-  const [service_description_required, setService_description_required] = useState("");
+  const [service_description_required, setService_description_required] =
+    useState("");
   const [price_required, setPrice_required] = useState("");
   const [formData, setFormData] = useState({
     service_description: "",
     price: "",
   });
+  const { employee } = useAuth();
+  const employee_id = employee.decodedToken.employee_id;
   const customer_id = window.location.pathname.split("/")[3];
   const vehicle_id = window.location.pathname.split("/")[4];
-
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
-    })
-  }
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  }
+    let valid = true;
+    if (!formData.service_description) {
+      setService_description_required("please enter service description");
+      valid = false;
+    }
+    if (!formData.price) {
+      setPrice_required("please enter price");
+      valid = false;
+    }
+    if (!valid) {
+      return;
+    }
+    try {
+      const res = await order_services.addOrder(customer_id, vehicle_id, employee_id, formData);
+      toast.success(res.data.message, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
   useEffect(() => {
     const response = customerService.getCustomerById(customer_id);
     response.then((data) => {
@@ -48,6 +92,7 @@ const CreateOrderComponent = () => {
       setAllServices(res);
     });
   }, []);
+
   return (
     <div className=" m-10">
       <div className=" flex">
@@ -135,10 +180,10 @@ const CreateOrderComponent = () => {
       </div>
 
       <div className="border shadow-sm mt-3 rounded-md p-3 w-[1000px] mb-4 ">
-          <div className=" flex justify-start m-2">
-            <h1 className=" font-extrabold text-3xl">Additional Requests</h1>
-            <h1 className=" w-11 mt-[-10px] border-b-2 border-red-500"></h1>
-          </div>
+        <div className=" flex justify-start m-2">
+          <h1 className=" font-extrabold text-3xl">Additional Requests</h1>
+          <h1 className=" w-11 mt-[-10px] border-b-2 border-red-500"></h1>
+        </div>
         <div className=" flex justify-center">
           <form onSubmit={handleSubmit}>
             {/* insert text area */}

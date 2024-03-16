@@ -4,7 +4,7 @@ const vehicleController = require('../controller/vehicle.controller');
 
 router.post(
     "/api/vehicle",
-    [verifyToken, isAdmin],
+    // [verifyToken, isAdmin],
     vehicleController.createVehicle
 );
 

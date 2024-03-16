@@ -15,7 +15,8 @@ const login = async (req, res, next) => {
         const payload = {
             email: employee.data.employee_email,
             first_name: employee.data.employee_first_name,
-            employee_role: employee.data.company_role_id
+            employee_role: employee.data.company_role_id,
+            employee_id: employee.data.employee_id
         }
         console.log(payload)
         const token = jwt.sign(payload, JWT_SECRET, {expiresIn: '1d'})
