@@ -24,5 +24,14 @@ const createOrder = async (req, res) => {
   }
 };
 
-const orderController = { createOrder };
+const getAllOrders = async (req, res) => {
+    const orders = await order_service.getAllOrders();
+    if(!orders){
+        return res.status(500).send('failed to get all orders')
+    }else{
+        return res.status(200).json({success: true, data: orders})
+    }
+}
+
+const orderController = { createOrder, getAllOrders };
 module.exports = orderController

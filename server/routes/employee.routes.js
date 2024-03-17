@@ -7,7 +7,7 @@ const employeeController = require('../controller/employee.controller');
 const { verifyToken, isAdmin } = require('../middlewares/auth.middleware');
 
 router.post(
-  "/api/employee",
+  "/api/employee",  
   [verifyToken, isAdmin],
   employeeController.createEmployee
 );

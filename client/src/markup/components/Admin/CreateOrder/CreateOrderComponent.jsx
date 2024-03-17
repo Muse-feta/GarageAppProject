@@ -6,6 +6,7 @@ import vehicleService from "../../../../services/vehicle.service";
 import serviceService from "../../../../services/services.service";
 import { Bounce, toast } from "react-toastify";
 import { useAuth } from "../../../../context/AuthContext";
+import order_services from "../../../../services/orders.service";
 
 const CreateOrderComponent = () => {
   const [customer, setCustomer] = useState([]);
@@ -14,12 +15,18 @@ const CreateOrderComponent = () => {
   const [service_description_required, setService_description_required] =
     useState("");
   const [price_required, setPrice_required] = useState("");
+  const [selectedServices, setSelectedServices] = useState([]);
+  // console.log(selectedServices);
   const [formData, setFormData] = useState({
-    service_description: "",
-    price: "",
+    additional_request: "",
+    order_total_price: "",
+    active_order: 1,
+    order_completed: 0,
+    order_status: 0,
+    additional_requests_completed: 0,
   });
   const { employee } = useAuth();
-  const employee_id = employee.decodedToken.employee_id;
+  const employee_id = employee?.decodedToken?.employee_id;
   const customer_id = window.location.pathname.split("/")[3];
   const vehicle_id = window.location.pathname.split("/")[4];
 
@@ -33,11 +40,11 @@ const CreateOrderComponent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     let valid = true;
-    if (!formData.service_description) {
+    if (!formData.additional_request) {
       setService_description_required("please enter service description");
       valid = false;
     }
-    if (!formData.price) {
+    if (!formData.order_total_price) {
       setPrice_required("please enter price");
       valid = false;
     }
@@ -45,8 +52,15 @@ const CreateOrderComponent = () => {
       return;
     }
     try {
-      const res = await order_services.addOrder(customer_id, vehicle_id, employee_id, formData);
-      toast.success(res.data.message, {
+      const res = await order_services.createOrder(
+        employee_id,
+        customer_id,
+        vehicle_id,
+        { ...formData, order_services: selectedServices }
+      );
+            
+
+      toast.success(res.message, {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -55,12 +69,15 @@ const CreateOrderComponent = () => {
         draggable: true,
         progress: undefined,
         theme: "light",
-        transition: Bounce,
+        transition: Bounce,  
       });
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 5000);
+      // console.log(res);
     } catch (error) {
-      console.log(error);
-      toast.error(error.response.data.message, {
+      // console.log(error);
+      toast.error(error.response.message, {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -73,6 +90,22 @@ const CreateOrderComponent = () => {
       });
     }
   };
+
+  const toggleServiceSelection = (serviceId) => {
+    setSelectedServices((prevSelectedServices) => {
+      const isSelected = prevSelectedServices.some(
+        (service) => service.service_id === serviceId
+      );
+      if (isSelected) {
+        return prevSelectedServices.filter(
+          (service) => service.service_id !== serviceId
+        );
+      } else {
+        return [...prevSelectedServices, { service_id: serviceId, service_completed: 0 }];
+      }
+    });
+  };
+
   useEffect(() => {
     const response = customerService.getCustomerById(customer_id);
     response.then((data) => {
@@ -172,7 +205,15 @@ const CreateOrderComponent = () => {
               </div>
 
               <div>
-                <input type="checkbox" className=" h-5 w-5" />
+                <input
+                  type="checkbox"
+                  name="service_id"
+                  onChange={() => toggleServiceSelection(data.service_id)}
+                  checked={selectedServices.some(
+                    (service) => service.service_id === data.service_id
+                  )}
+                  className=" h-5 w-5"
+                />
               </div>
             </div>
           </>
@@ -194,8 +235,8 @@ const CreateOrderComponent = () => {
                   : "md:w-[680px] py-3 px-5 mb-3 mt-3 input_border"
               }
               onChange={handleChange}
-              name="service_description"
-              value={formData.service_description}
+              name="additional_request"
+              value={formData.additional_request}
               cols="30"
               rows="10"
               placeholder={
@@ -204,7 +245,7 @@ const CreateOrderComponent = () => {
                   : "Service Description"
               }
             ></textarea>{" "}
-            <br />
+            <br /> <br /> <br />
             <input
               onChange={handleChange}
               className={
@@ -214,8 +255,8 @@ const CreateOrderComponent = () => {
               }
               type="text"
               placeholder={price_required ? price_required : "Price"}
-              name="price"
-              value={formData.price}
+              name="order_total_price"
+              value={formData.order_total_price}
             />
             <br />
             <div className="link-btn mt-3">
