@@ -79,5 +79,11 @@ const getAllEmployees = async () => {
   return rows[0];
 }
 
+const getEmployeeById = async (employee_id) => {
+  const query = `SELECT * FROM employee_info INNER JOIN employee_role ON employee_info.employee_id = employee_role.employee_id INNER JOIN employee ON employee_role.employee_id = employee.employee_id WHERE employee_info.employee_id = ?`;
+  const rows = await pool.query(query, [employee_id]);
+  return rows[0]; 
+};
 
-module.exports = { isEmployeeExist, createEmployee, getUserByEmail, getAllEmployees };
+
+module.exports = { isEmployeeExist, createEmployee, getUserByEmail, getAllEmployees, getEmployeeById };

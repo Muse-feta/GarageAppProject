@@ -1,14 +1,14 @@
 import React from 'react'
-import AllOrderComponent from '../../components/Admin/AllOrder/AllOrderComponent';
 import AdminMenu from '../../components/Admin/AdminMenu/AdminMenu';
+import ViewOrderComponent from '../../components/Admin/ViewOrder/ViewOrderComponent';
 
-const Orders = () => {
+const ViewOrder = () => {
   return (
     <div className=" flex overflow-hidden">
       <AdminMenu/>
-      <AllOrderComponent/>
+      <ViewOrderComponent/>
     </div>
   );
 }
 
-export default Orders
+export default ViewOrder

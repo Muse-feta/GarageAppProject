@@ -49,7 +49,7 @@ const createOrder = async (data) => {
 
 const getAllOrders = async () => {
     try {
-        const query = `SELECT * FROM orders INNER JOIN order_status ON orders.order_id = order_status.order_id INNER JOIN order_info ON orders.order_id = order_info.order_id INNER JOIN order_services ON orders.order_id = order_services.order_id`;
+        const query = `SELECT * FROM orders INNER JOIN order_status ON orders.order_id = order_status.order_id INNER JOIN order_info ON orders.order_id = order_info.order_id`;
         const rows = await pool.query(query);
         return rows[0];
     } catch (error) {
@@ -57,7 +57,17 @@ const getAllOrders = async () => {
     }
 }
 
+const singleOrder = async (order_id) => {
+    try {
+        const query = `SELECT * FROM orders INNER JOIN order_status ON orders.order_id = order_status.order_id INNER JOIN order_info ON orders.order_id = order_info.order_id INNER JOIN order_services ON orders.order_id = order_services.order_id WHERE orders.order_id = ?`;
+        const rows = await pool.query(query, [order_id]);
+        return rows[0];
+    } catch (error) {
+        console.log(error);
+    }
+}
 
-    const order_service = { createOrder, getAllOrders };
+
+    const order_service = { createOrder, getAllOrders, singleOrder };
 
     module.exports = order_service

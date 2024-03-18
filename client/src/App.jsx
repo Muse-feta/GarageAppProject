@@ -26,6 +26,7 @@ import Edit_Service from "./markup/pages/admin/Edit_Service";
 import AddOrder from "./markup/pages/admin/AddOrder";
 import NewOrderById from "./markup/pages/admin/NewOrderById";
 import CreateOrder from "./markup/pages/admin/CreateOrder";
+import ViewOrder from "./markup/pages/admin/ViewOrder";
 
 function App() {
   return (
@@ -121,7 +122,7 @@ function App() {
             path="admin/new-order/:customer_id"
             element={
               // <PrivateAuthRoute role={[1, 2, 3]}>
-              <NewOrderById/>
+              <NewOrderById />
               // </PrivateAuthRoute>
             }
           />
@@ -129,7 +130,15 @@ function App() {
             path="admin/new-order/:customer_id/:vehicle_id"
             element={
               // <PrivateAuthRoute role={[1, 2, 3]}>
-              <CreateOrder/>
+              <CreateOrder />
+              // </PrivateAuthRoute>
+            }
+          />
+          <Route
+            path="admin/view-order/:id"
+            element={
+              // <PrivateAuthRoute role={[1, 2, 3]}>
+              <ViewOrder/>
               // </PrivateAuthRoute>
             }
           />

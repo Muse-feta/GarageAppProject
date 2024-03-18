@@ -17,6 +17,12 @@ router.get(
   employeeController.getAllEmployees
 )
 
+router.get(
+  "/api/employee/:employee_id", 
+  // [verifyToken, isAdmin],
+  employeeController.getEmployeeById
+)
+
 
 // export the router
 module.exports=router;

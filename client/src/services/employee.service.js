@@ -25,8 +25,19 @@ const getAllEmployees = async (employeeToken) => {
   return res
 }
 
+const getEmployeeById = async (employee_id, employeeToken) => {
+  const res = await axios.get(`${api_url}/employee/${employee_id}`,
+   {
+     headers: {
+      "x-access-token": employeeToken,
+    },
+   }
+  );
+  return res
+}
+
 // export default createEmployee
-const employeeService = {createEmployee, getAllEmployees}
+const employeeService = {createEmployee, getAllEmployees, getEmployeeById}
 export default employeeService;
 
 
