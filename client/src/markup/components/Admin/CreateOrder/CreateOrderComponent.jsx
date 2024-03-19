@@ -58,7 +58,6 @@ const CreateOrderComponent = () => {
         vehicle_id,
         { ...formData, order_services: selectedServices }
       );
-            
 
       toast.success(res.message, {
         position: "top-center",
@@ -69,7 +68,7 @@ const CreateOrderComponent = () => {
         draggable: true,
         progress: undefined,
         theme: "light",
-        transition: Bounce,  
+        transition: Bounce,
       });
       setTimeout(() => {
         window.location.reload();
@@ -101,7 +100,10 @@ const CreateOrderComponent = () => {
           (service) => service.service_id !== serviceId
         );
       } else {
-        return [...prevSelectedServices, { service_id: serviceId, service_completed: 0 }];
+        return [
+          ...prevSelectedServices,
+          { service_id: serviceId, service_completed: 0 },
+        ];
       }
     });
   };

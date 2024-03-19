@@ -59,7 +59,7 @@ const getAllOrders = async () => {
 
 const singleOrder = async (order_id) => {
     try {
-        const query = `SELECT * FROM orders INNER JOIN order_status ON orders.order_id = order_status.order_id INNER JOIN order_info ON orders.order_id = order_info.order_id INNER JOIN order_services ON orders.order_id = order_services.order_id WHERE orders.order_id = ?`;
+        const query = `SELECT * FROM orders INNER JOIN order_status ON orders.order_id = order_status.order_id INNER JOIN order_info ON orders.order_id = order_info.order_id INNER JOIN order_services ON orders.order_id = order_services.order_id INNER JOIN common_services ON order_services.service_id = common_services.service_id WHERE orders.order_id = ?`;
         const rows = await pool.query(query, [order_id]);
         return rows[0];
     } catch (error) {
@@ -67,7 +67,36 @@ const singleOrder = async (order_id) => {
     }
 }
 
+const updateOrderServiceStatus = async (order_id, service_id) => {
+    try {
+    const query = `
+UPDATE order_services AS os
+JOIN order_info AS oi ON os.order_id = oi.order_id
+SET 
+    os.service_completed = CASE 
+                            WHEN os.service_completed = 1 THEN 0 
+                            ELSE 1 
+                        END,
+    oi.additional_requests_completed = CASE 
+                                        WHEN oi.additional_requests_completed = 1 THEN 0 
+                                        ELSE 1 
+                                    END
+WHERE 
+    os.order_id = ? AND os.service_id = ?
+`;
+    const rows = await pool.query(query, [order_id, service_id]);
+        return rows[0];
+    } catch (error) {
+        console.log(error);
+    }
+}
 
-    const order_service = { createOrder, getAllOrders, singleOrder };
+
+    const order_service = {
+      createOrder,
+      getAllOrders,
+      singleOrder,
+      updateOrderServiceStatus,
+    };
 
     module.exports = order_service
