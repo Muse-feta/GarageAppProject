@@ -11,39 +11,107 @@ import order_services from "../../../../services/orders.service";
 const ViewOrderComonent = () => {
   const [customer, setCustomer] = useState([]);
   const [order, setOrder] = useState([]);
+  const [customer_id, setCustomerId] = useState("");
+  const [vehicle_id, setVehicleId] = useState("");
   const [vehicle, setVehicle] = useState([]);
+  const [service, setService] = useState([]);
   const { employee } = useAuth();
   const employee_id = employee?.decodedToken?.employee_id;
-  const order_id = window.location.href.split("/")[3];
+  const order_id = window.location.pathname.split("/")[3];
+  // console.log(order_id)
+  // console.log(customer_id)
+  console.log(order)
 
  
 useEffect(() => {
-  const res = order_services.getSingleOrder(order_id);
-  res.then((data) => {
-    setOrder(data);
+  const response = order_services.getSingleOrder(order_id);
+  response.then((data) => {
+    setOrder(data.data);
+    setCustomerId(data.data[0]?.customer_id);
+    setVehicleId(data.data[0]?.vehicle_id);
     console.log(data);
   });
+
+   
+
 }, [])
 
-  // useEffect(() => {
-  //   const response = customerService.getCustomerById(customer_id);
-  //   response.then((data) => {
-  //     setCustomer(data.data.data[0]);
-  //     console.log(data.data.data);
-  //   });
+ useEffect(() => {
+      const response2 = customerService.getCustomerById(customer_id);
+      response2.then((data) => {
+        setCustomer(data.data.data[0]);
+        console.log(data.data.data);
+      });
 
-  //   const vehicle = vehicleService.getVehiclesByVehicleId(vehicle_id);
-  //   vehicle.then((data) => {
-  //     setVehicle(data.data.data[0]);
-  //     console.log(data.data.data);
-  //   });
+      const vehicle = vehicleService.getVehiclesByVehicleId(vehicle_id);
+      vehicle.then((data) => {
+        setVehicle(data.data.data[0]);
+        console.log(data.data.data);
+      });
+ }, [customer_id, vehicle_id])
 
-  //   const services = serviceService.getServices();
-  //   services.then((res) => {
-  //     console.log(res);
-  //     setAllServices(res);
-  //   });
-  // }, []);
+const handleCheckboxChange = (order_id, service_id, currentStatus) => {
+  const updatedStatus = currentStatus === 0 ? 1 : 0; // Toggle the status
+
+  const res = order_services.updateOrderServiceCompleted(
+    order_id,
+    service_id
+  );
+  res
+    .then((data) => {
+      // Assuming your updateOrderServiceCompleted function returns updated data
+      console.log(data);
+
+      // If successful, update the order state to reflect the changes
+      setOrder((prevOrder) =>
+        prevOrder.map((item) =>
+          item.order_id === order_id && item.service_id === service_id
+            ? { ...item, service_completed: updatedStatus }
+            : item
+        )
+      );
+
+      // Show a toast notification or perform any other action to indicate success
+     
+    })
+    .catch((error) => {
+      // Handle error here
+      console.error("Error updating service status:", error);
+      // Show a toast notification or perform any other action to indicate failure
+     
+    });
+};
+
+const handleCheckboxChangeAdditionalRequest = (order_id,  currentStatus) => {
+  const updatedStatus = currentStatus === 0 ? 1 : 0; // Toggle the status
+
+  const res = order_services.updateOrderAdditionalRequest(
+    order_id
+  );
+  res
+    .then((data) => {
+      // Assuming your updateOrderServiceCompleted function returns updated data
+      console.log(data);
+
+      // If successful, update the order state to reflect the changes
+      setOrder((prevOrder) =>
+        prevOrder.map((item) =>
+          item.order_id === order_id
+            ? { ...item, additional_requests_completed: updatedStatus }
+            : item
+        )
+      );  
+
+      // Show a toast notification or perform any other action to indicate success
+     
+    })
+    .catch((error) => {
+      // Handle error here
+      console.error("Error updating service status:", error);
+      // Show a toast notification or perform any other action to indicate failure
+     
+    });
+}
 
   return (
     <div className=" m-10">
@@ -105,6 +173,80 @@ useEffect(() => {
             <Link to={`/admin/customer-edit/${customer?.customer_id}`}>
               <FaEdit />
             </Link>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        {order.map((data) => (
+          <div className=" shadow-md px-4 py-3 mt-5 flex justify-between">
+            <div>
+              <h1 className="mb-2 font-extrabold text-xl">
+                {data.service_name}
+              </h1>
+              <h1>{data.service_description}</h1>
+              <h1>
+                {" "}
+                {data.service_completed === 0 ? (
+                  <h1 className=" bg-[#ffc83c] rounded-md text-center font-bold w-[130px] mt-3">
+                    In Progress
+                  </h1>
+                ) : (
+                  <h1 className=" bg-[#00ff00] rounded-md text-center font-bold w-[130px] mt-3">
+                    Completed
+                  </h1>
+                )}
+              </h1>
+            </div>
+
+            <div className=" flex justify-end items-end gap-2">
+              <input
+                className="h-6 w-6"
+                type="checkbox"
+                onChange={() =>
+                  handleCheckboxChange(
+                    data.order_id,
+                    data.service_id,
+                    data.service_completed
+                  )
+                }
+                checked={data.service_completed === 1 ? true : false}
+              />
+            </div>
+          </div>
+        ))}
+        <div className=" shadow-md px-4 py-3 mt-5 flex justify-between">
+          <div>
+            <h1 className="mb-2 font-extrabold text-xl">Additional Request</h1>
+            <h1>{order[0]?.additional_request}</h1>
+            <h1>
+              {" "}
+              {order[0]?.additional_requests_completed === 0 ? (
+                <h1 className=" bg-[#ffc83c] rounded-md text-center font-bold w-[130px] mt-3">
+                  In Progress
+                </h1>
+              ) : (
+                <h1 className=" bg-[#00ff00] rounded-md text-center font-bold w-[130px] mt-3">
+                  Completed
+                </h1>
+              )}
+            </h1>
+          </div>
+
+          <div className=" flex justify-end items-end gap-2">
+            <input
+              className="h-6 w-6"
+              type="checkbox"
+              onChange={() =>
+                handleCheckboxChangeAdditionalRequest(
+                  order[0]?.order_id,
+                  order[0].additional_requests_completed
+                )
+              }
+              checked={
+                order[0]?.additional_requests_completed === 1 ? true : false
+              }
+            />
           </div>
         </div>
       </div>

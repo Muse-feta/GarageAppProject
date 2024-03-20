@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import customerService from "../../../../services/customer.service";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaEdit } from "react-icons/fa";
 import vehicleService from "../../../../services/vehicle.service";
 import serviceService from "../../../../services/services.service";
@@ -25,6 +25,7 @@ const CreateOrderComponent = () => {
     order_status: 0,
     additional_requests_completed: 0,
   });
+  const navigate = useNavigate();
   const { employee } = useAuth();
   const employee_id = employee?.decodedToken?.employee_id;
   const customer_id = window.location.pathname.split("/")[3];
@@ -70,9 +71,8 @@ const CreateOrderComponent = () => {
         theme: "light",
         transition: Bounce,
       });
-      setTimeout(() => {
-        window.location.reload();
-      }, 5000);
+      navigate("/admin/orders");
+      
       // console.log(res);
     } catch (error) {
       // console.log(error);

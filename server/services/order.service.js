@@ -49,7 +49,7 @@ const createOrder = async (data) => {
 
 const getAllOrders = async () => {
     try {
-        const query = `SELECT * FROM orders INNER JOIN order_status ON orders.order_id = order_status.order_id INNER JOIN order_info ON orders.order_id = order_info.order_id`;
+        const query = `SELECT * FROM orders INNER JOIN order_status ON orders.order_id = order_status.order_id INNER JOIN order_info ON orders.order_id = order_info.order_id ORDER BY orders.order_id DESC`;
         const rows = await pool.query(query);
         return rows[0];
     } catch (error) {
@@ -69,22 +69,34 @@ const singleOrder = async (order_id) => {
 
 const updateOrderServiceStatus = async (order_id, service_id) => {
     try {
-    const query = `
-UPDATE order_services AS os
-JOIN order_info AS oi ON os.order_id = oi.order_id
+  const query = `
+UPDATE order_services 
 SET 
-    os.service_completed = CASE 
-                            WHEN os.service_completed = 1 THEN 0 
+    service_completed = CASE 
+                            WHEN service_completed = 1 THEN 0 
                             ELSE 1 
-                        END,
-    oi.additional_requests_completed = CASE 
-                                        WHEN oi.additional_requests_completed = 1 THEN 0 
-                                        ELSE 1 
-                                    END
-WHERE 
-    os.order_id = ? AND os.service_id = ?
+                        END
+WHERE order_id = ? AND service_id = ?;
 `;
     const rows = await pool.query(query, [order_id, service_id]);
+        return rows[0];
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const updateOrderAdditionalRequests = async (order_id) => {
+    try {
+  const query = `
+UPDATE order_info 
+SET 
+    additional_requests_completed = CASE 
+                            WHEN additional_requests_completed = 1 THEN 0 
+                            ELSE 1 
+                        END
+WHERE order_id = ?
+`;
+    const rows = await pool.query(query, [order_id]);
         return rows[0];
     } catch (error) {
         console.log(error);
@@ -97,6 +109,7 @@ WHERE
       getAllOrders,
       singleOrder,
       updateOrderServiceStatus,
+      updateOrderAdditionalRequests
     };
 
     module.exports = order_service

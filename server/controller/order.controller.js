@@ -49,7 +49,19 @@ const  updateOrderServiceStatus = async (req, res) => {
     }else{
         return res.status(200).json({success: true, data: order})
     }
-}
+};
 
-const orderController = { createOrder, getAllOrders, singleOrder, updateOrderServiceStatus };
+const updateOrderAdditionalRequests = async (req, res) => {
+    // console.log(req.params.order_id)
+  const order_requset = await order_service.updateOrderAdditionalRequests(
+    req.params.order_id
+  );
+  if (!order_requset) {
+    return res.status(500).send("failed to get single order");
+  } else {
+    return res.status(200).json({ success: true, data: order_requset });
+  }
+};
+
+const orderController = { createOrder, getAllOrders, singleOrder, updateOrderServiceStatus, updateOrderAdditionalRequests };
 module.exports = orderController
