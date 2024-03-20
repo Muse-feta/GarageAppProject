@@ -37,18 +37,66 @@ useEffect(() => {
 }, [])
 
  useEffect(() => {
-      const response2 = customerService.getCustomerById(customer_id);
-      response2.then((data) => {
-        setCustomer(data.data.data[0]);
-        console.log(data.data.data);
-      });
+   const response2 = customerService.getCustomerById(customer_id);
+   response2.then((data) => {
+     setCustomer(data.data.data[0]);
+     console.log(data.data.data);
+   });
 
-      const vehicle = vehicleService.getVehiclesByVehicleId(vehicle_id);
-      vehicle.then((data) => {
-        setVehicle(data.data.data[0]);
-        console.log(data.data.data);
-      });
- }, [customer_id, vehicle_id])
+   const vehicle = vehicleService.getVehiclesByVehicleId(vehicle_id);
+   vehicle.then((data) => {
+     setVehicle(data.data.data[0]);
+     console.log(data.data.data);
+   });
+
+   // Check if all services are completed and additional requests are completed
+   const allServicesCompleted = order.every(
+     (item) => item.service_completed === 1
+   );
+   const additionalRequestsCompleted =
+     order[0]?.additional_requests_completed === 1;
+
+   if (allServicesCompleted && additionalRequestsCompleted) {
+     // Update order status to 1
+     const updateOrderStatusResponse = order_services.updateOrderStatus(
+       order_id,
+       1
+     );
+     updateOrderStatusResponse
+       .then((data) => {
+         // Assuming your updateOrderStatus function returns updated data
+         console.log(data);
+         // Update the order state to reflect the changes
+         setOrder((prevOrder) =>
+           prevOrder.map((item) => ({ ...item, order_status: 1 }))
+         );
+       })
+       .catch((error) => {
+         // Handle error here
+         console.error("Error updating order status:", error);
+       });
+   }
+   if (!allServicesCompleted || !additionalRequestsCompleted) {
+     // Update order status to 1
+     const updateOrderStatusResponse = order_services.updateOrderStatus(
+       order_id,
+       0
+     );
+     updateOrderStatusResponse
+       .then((data) => {
+         // Assuming your updateOrderStatus function returns updated data
+         console.log(data);
+         // Update the order state to reflect the changes
+         setOrder((prevOrder) =>
+           prevOrder.map((item) => ({ ...item, order_status: 1 }))
+         );
+       })
+       .catch((error) => {
+         // Handle error here
+         console.error("Error updating order status:", error);
+       });
+   }
+ }, [customer_id, vehicle_id, order]);
 
 const handleCheckboxChange = (order_id, service_id, currentStatus) => {
   const updatedStatus = currentStatus === 0 ? 1 : 0; // Toggle the status

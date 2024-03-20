@@ -29,13 +29,22 @@ const updateOrderAdditionalRequest = async (order_id) => {
   return res.data;
 };
 
+const updateOrderStatus = async (order_id, order_status) => {
+  const res = await axios.put(
+    `${api_url}/order/update/order/status/${order_id}`,
+    { order_status }
+  );
+  return res.data;
+};
+
 
 const order_services = {
     createOrder,
     getAllOrders,
     getSingleOrder,
     updateOrderServiceCompleted,
-    updateOrderAdditionalRequest
+    updateOrderAdditionalRequest,
+    updateOrderStatus
 };
 
 export default order_services;

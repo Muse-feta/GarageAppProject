@@ -103,13 +103,28 @@ WHERE order_id = ?
     }
 }
 
+const updateOrderStatus = async (order_id, order_status) => {
+    try {
+  const query = `
+UPDATE order_status 
+SET 
+    order_status = ? WHERE order_id = ?
+`;
+    const rows = await pool.query(query, [order_status, order_id]);
+        return rows[0];
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
     const order_service = {
       createOrder,
       getAllOrders,
       singleOrder,
       updateOrderServiceStatus,
-      updateOrderAdditionalRequests
+      updateOrderAdditionalRequests,
+      updateOrderStatus
     };
 
     module.exports = order_service
