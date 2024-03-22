@@ -117,6 +117,45 @@ SET
     }
 }
 
+const updateOrder = async (order_id, data) => {
+    try {
+        const query = `UPDATE orders
+SET employee_id = ?, customer_id = ?, vehicle_id = ?, active_order = ?
+WHERE order_id = ?`;
+
+        const rows = await pool.query(query, [
+          data.employee_id,
+          data.customer_id,
+          data.vehicle_id,
+          data.active_order,
+          order_id, // Assuming data.order_id contains the value for order_id
+        ]);
+        const query2 = `UPDATE order_status SET order_status = ? WHERE order_id = ?`;
+        const rows2 = await pool.query(query2, [
+          data.order_status,
+          order_id,
+        ]);
+        const query3 = `UPDATE order_info SET order_total_price = ?, additional_request = ?, additional_requests_completed = ? WHERE order_id = ?`;
+        const rows3 = await pool.query(query3, [
+          data.order_total_price,
+          data.additional_request,
+          data.additional_requests_completed,
+          order_id,
+        ]);
+        const query4 = `UPDATE order_services SET service_completed = ? WHERE order_id = ?`;
+        for (const service of data.order_services) {
+          const rows4 = await pool.query(query4, [
+            service.service_completed,
+            order_id,
+          ]);
+        };
+
+        return rows;
+     } catch (error) {
+        console.log(error);
+    }
+}
+
 
     const order_service = {
       createOrder,
@@ -124,7 +163,8 @@ SET
       singleOrder,
       updateOrderServiceStatus,
       updateOrderAdditionalRequests,
-      updateOrderStatus
+      updateOrderStatus,
+      updateOrder
     };
 
     module.exports = order_service

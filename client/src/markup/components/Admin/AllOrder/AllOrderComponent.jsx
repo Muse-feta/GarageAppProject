@@ -195,7 +195,7 @@ const AllOrderComponent = () => {
                               )}
                             </td>
                             <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap flex">
-                              <div className=" flex justify-center items-center text-xl mt-5">
+                              <div className=" flex justify-center items-center text-xl mt-3">
                                 <Link
                                   to={`/admin/edit-order/${order.order_id}`}
                                 >
