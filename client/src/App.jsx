@@ -27,6 +27,7 @@ import AddOrder from "./markup/pages/admin/AddOrder";
 import NewOrderById from "./markup/pages/admin/NewOrderById";
 import CreateOrder from "./markup/pages/admin/CreateOrder";
 import ViewOrder from "./markup/pages/admin/ViewOrder";
+import EditOrder from "./markup/pages/admin/EditOrder";
 
 function App() {
   return (
@@ -138,7 +139,15 @@ function App() {
             path="admin/view-order/:id"
             element={
               // <PrivateAuthRoute role={[1, 2, 3]}>
-              <ViewOrder/>
+              <ViewOrder />
+              // </PrivateAuthRoute>
+            }
+          />
+          <Route
+            path="/admin/edit-order/:id"
+            element={
+              // <PrivateAuthRoute role={[1, 2, 3]}>
+              <EditOrder />
               // </PrivateAuthRoute>
             }
           />
