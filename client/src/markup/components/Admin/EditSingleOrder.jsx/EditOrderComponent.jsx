@@ -10,6 +10,8 @@ import customerService from "../../../../services/customer.service";
 
 const EditOrderComponent = () => {
   const [customer, setCustomer] = useState([]);
+  const [customer_id, setCustomerId] = useState("");
+  const [vehicle_id, setVehicleId] = useState("");
   const [singleOrder, setSingleOrder] = useState([]);
   const [vehicle, setVehicle] = useState([]);
   const [Allservices, setAllServices] = useState([]);
@@ -34,7 +36,7 @@ const EditOrderComponent = () => {
 
   const handleChange = (e) => {
     setFormData({
-      ...formData,
+      ...formData[0],
       [e.target.name]: e.target.value,
     });
   };
@@ -49,16 +51,18 @@ useEffect(() => {
 
   // Moved accessing customer_id and vehicle_id inside the promise resolution
   orders.then((data) => {
-    const customerId = data.data[0]?.customer_id;
-    const vehicleId = data.data[0]?.vehicle_id;
+    setCustomerId(data.data[0].customer_id);
+    setVehicleId(data.data[0].vehicle_id);
 
-    const response = customerService.getCustomerById(customerId);
+    const response = customerService.getCustomerById(data.data[0].customer_id);
     response.then((data) => {
       setCustomer(data.data.data[0]);
       console.log(data.data.data);
     });
 
-    const vehicle = vehicleService.getVehiclesByVehicleId(vehicleId);
+    const vehicle = vehicleService.getVehiclesByVehicleId(
+      data.data[0].vehicle_id
+    );
     vehicle.then((data) => {
       setVehicle(data.data.data[0]);
       console.log(data.data.data);
@@ -234,7 +238,7 @@ useEffect(() => {
                   name="service_id"
                   onChange={() => toggleServiceSelection(data.service_id)}
                   checked={selectedServices.some(
-                    (service) => service.service_id === data.service_id
+                    (service) => service.service_id === data.service_id 
                   ) }
                   className=" h-5 w-5"
                 />

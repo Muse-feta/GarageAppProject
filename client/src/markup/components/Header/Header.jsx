@@ -7,8 +7,9 @@ import { logOut } from "../../../../util/auth";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
-  console.log(useAuth())
+  console.log(useAuth());
   const { employee, isLoged, setIsLoged } = useAuth();
+  console.log(employee)
 
   const handleOpen = () => {
     setIsOpen(!isOpen);
@@ -17,7 +18,7 @@ const Header = () => {
   const handleLogOut = () => {
     logOut();
     setIsLoged(false);
-  }
+  };
 
   return (
     <div className=" sticky top-0 bg-white z-10 shadow-lg">
@@ -63,6 +64,12 @@ const Header = () => {
                         <li>
                           <a href="/contact">Contact Us</a>
                         </li>
+
+                        {employee?.decodedToken?.employee_role === 3 ? (
+                          <li className=" mr-2 ">
+                          <a href="/admin/dashbored">Admin</a>
+                        </li>
+                        ) : null}
                       </ul>
                     </div>
                   </nav>

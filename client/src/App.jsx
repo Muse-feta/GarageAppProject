@@ -28,6 +28,7 @@ import NewOrderById from "./markup/pages/admin/NewOrderById";
 import CreateOrder from "./markup/pages/admin/CreateOrder";
 import ViewOrder from "./markup/pages/admin/ViewOrder";
 import EditOrder from "./markup/pages/admin/EditOrder";
+import Dashbored from "./markup/pages/admin/Dashbored";
 
 function App() {
   return (
@@ -66,9 +67,9 @@ function App() {
           <Route
             path="/admin/add-employee"
             element={
-              <PrivateAuthRoute role={[3]}>
+              // <PrivateAuthRoute role={[3]}>
                 <Add_Employee />
-              </PrivateAuthRoute>
+              // </PrivateAuthRoute>
             }
           />
           <Route
@@ -151,6 +152,16 @@ function App() {
               // </PrivateAuthRoute>
             }
           />
+          <Route
+            path="/admin/dashbored"
+            element={
+              // <PrivateAuthRoute role={[1, 2, 3]}>
+              <Dashbored/>
+              // </PrivateAuthRoute>
+            }
+          />
+        
+          
         </Route>
       </Routes>
       <ToastContainer />
